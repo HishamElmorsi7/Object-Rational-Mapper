@@ -46,6 +46,15 @@ WHERE
 INSERT INTO
     questions (title, body, author_id)
 SELECT
+    "heredoc", "Why to use heredocs?", users.id
+FROM
+    users
+WHERE
+    users.fname = "Hisham" AND users.lname = "Elmorsi";
+
+INSERT INTO
+    questions (title, body, author_id)
+SELECT
     "Adam's question", 'This is a question from Adam', users.id
 FROM
     users

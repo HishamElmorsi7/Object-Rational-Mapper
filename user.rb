@@ -3,7 +3,7 @@ require_relative 'DBConnection'
 # DBConnection.instance
 class User
     attr_accessor :id, :fname, :lname
-    
+
     def self.all
         users = DBConnection.instance.execute("SELECT * FROM users")
         users.map { |user| User.new(user) }

@@ -1,7 +1,7 @@
 require_relative 'DBConnection'
 
 class Question_follow
-    attr_accessor :id, :user, :question
+    attr_accessor :id, :user_id, :question_id
 
     def initialize(options)
         @id = options['id']

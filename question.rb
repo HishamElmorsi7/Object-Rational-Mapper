@@ -37,5 +37,17 @@ class Question
         Question.new(question.first) unless question.empty?
     end
 
+    def self.find_by_author_id(author_id)
+        questions = DBConnection.instance.execute(<<~SQL, author_id)
+            SELECT
+                questions.*
+            FROM
+                questions
+            WHERE
+                author_id = ?
+        SQL
+
+        questions.map { |question| Question.new(question)}
+    end
 
 end

@@ -36,4 +36,31 @@ class Reply
 
         Reply.new(reply.first) unless reply.empty?
     end
+
+    def self.find_by_author_id(author_id)
+        replies = DBConnection.instance.execute(<<~SQL, author_id)
+            SELECT
+                replies.*
+            FROM
+                replies
+            WHERE
+                author_id = ?
+        SQL
+
+        replies.map { |reply| Reply.new(reply) }
+    end
+
+
+    def self.find_by_question_id(question_id)
+        replies = DBConnection.instance.execute(<<~SQL, question_id)
+            SELECT
+                replies.*
+            FROM
+                replies
+            WHERE
+                question_id = ?
+        SQL
+
+        replies.map { |reply| Reply.new(reply) }
+    end
 end
