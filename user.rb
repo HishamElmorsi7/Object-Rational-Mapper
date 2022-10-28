@@ -1,4 +1,5 @@
 require_relative 'DBConnection'
+require_relative 'question'
 
 # DBConnection.instance
 class User
@@ -39,5 +40,13 @@ class User
         SQL
 
         users.map { |user| User.new(user) }
+    end
+
+    def authored_question
+        Question.find_by_author_id(self.id)
+    end
+
+    def authored_replies
+        Reply.find_by_author_id(self.id)
     end
 end

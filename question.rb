@@ -1,5 +1,5 @@
 require_relative 'DBConnection'
-
+require_relative 'reply'
 
 class Question
     attr_accessor :id, :title, :body, :author_id
@@ -50,4 +50,11 @@ class Question
         questions.map { |question| Question.new(question)}
     end
 
+    def author
+        User.find_by_id(self.author_id)
+    end
+
+    def replies
+        Reply.find_by_question_id(self.id)
+    end
 end

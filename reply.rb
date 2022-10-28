@@ -1,7 +1,8 @@
 require_relative 'DBConnection'
+require_relative 'user'
 
 class Reply
-    attr_accessor :id, :author_id, :question, :body, :parent_reply_id
+    attr_accessor :id, :author_id, :question_id, :body, :parent_reply_id
 
     def initialize(options)
         @id = options['id']
@@ -62,5 +63,30 @@ class Reply
         SQL
 
         replies.map { |reply| Reply.new(reply) }
+    end
+
+    def author
+        User.find_by_id(self.author_id)
+    end
+
+    def question
+        Question.find_by_id(self.question_id)
+    end
+
+    def parent_reply
+        Reply.find_by_id(self.parent_reply_id)
+    end
+
+    def child_replies
+        child_replies = DBConnection.instance.execute(<<~SQL, self.id)
+            SELECT
+                replies.*
+            FROM
+                replies
+            WHERE
+                parent_reply_id = ?
+        SQL
+
+        child_replies.map { |reply| Reply.new(reply)}
     end
 end
