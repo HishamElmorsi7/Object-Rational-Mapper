@@ -1,4 +1,5 @@
 require_relative 'DBConnection'
+require_relative 'user'
 
 class Question_follow
     attr_accessor :id, :user_id, :question_id
@@ -22,4 +23,39 @@ class Question_follow
         Question_follow.new(question_follow.first) unless question_follow.empty?
     end
 
+    def self.followers_for_question_id(question_id)
+        users = DBConnection.instance.execute(<<~SQL, question_id)
+            SELECT
+                users.*
+            FROM
+                users
+            INNER JOIN
+                question_follows
+            ON
+                users.id = question_follows.user_id
+            WHERE
+                question_follows.question_id = ?
+        SQL
+
+        users.map { |user| User.new(user) }
+    end
+
+    def self.followed_questions_for_user_id(user_id)
+        questions = DBConnection.instance.execute(<<~SQL, user_id)
+            SELECT
+                questions.*
+            FROM
+                questions
+            INNER JOIN
+                question_follows
+            ON
+                questions.id = question_follows.question_id
+            WHERE
+                question_follows.user_id = ?
+        SQL
+
+        questions.map { |question| Question.new(question) }
+    end
+
+    
 end

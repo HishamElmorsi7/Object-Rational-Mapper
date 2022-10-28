@@ -1,5 +1,6 @@
 require_relative 'DBConnection'
 require_relative 'reply'
+require_relative 'question_follow'
 
 class Question
     attr_accessor :id, :title, :body, :author_id
@@ -56,5 +57,9 @@ class Question
 
     def replies
         Reply.find_by_question_id(self.id)
+    end
+
+    def followers
+        Question_follow.followers_for_question_id(self.id)
     end
 end

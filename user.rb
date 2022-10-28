@@ -1,5 +1,6 @@
 require_relative 'DBConnection'
 require_relative 'question'
+require_relative 'question_follow'
 
 # DBConnection.instance
 class User
@@ -48,5 +49,9 @@ class User
 
     def authored_replies
         Reply.find_by_author_id(self.id)
+    end
+
+    def followed_questions
+        Question_follow.followed_questions_for_user_id(self.id)
     end
 end
