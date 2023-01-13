@@ -11,7 +11,3 @@ class DBConnection < SQLite3::Database
         self.type_translation = true
     end
 end
-
-def x
-    '\n HI \n'
-end

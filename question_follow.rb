@@ -57,5 +57,23 @@ class Question_follow
         questions.map { |question| Question.new(question) }
     end
 
-    
+    def self.most_followed_questions(n)
+        questions_id = DBConnection.instance.execute(<<~SQL, n)
+            SELECT
+                question_id
+            FROM
+                question_follows
+            GROUP BY
+                question_id
+            ORDER BY
+                COUNT(user_id)
+            DESC
+
+            LIMIT ?
+        SQL
+
+        questions_id.map do |question_id|
+            Question.find_by_id(question_id['question_id'])
+        end
+    end
 end
